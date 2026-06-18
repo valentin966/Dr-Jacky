@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización Web — Dra. Jacky | Bit3io</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bit3-green: #00C896;
+            --bit3-green-light: #00E8AD;
+            --bit3-purple: #8B5CF6;
+            --bit3-cyan: #06B6D4;
+            --bit3-bg: #1a1a1f;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a8;
+            --text-subtle: #6a6a72;
+            --glass-border: rgba(255,255,255,0.06);
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Bai Jamjuree', sans-serif; background-color: var(--bit3-bg); color: var(--text-light); min-height: 100vh; overflow-x: hidden; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+        .bg-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+        .bg-noise { position: absolute; width: 100%; height: 100%; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        .bg-gradient { position: absolute; width: 100%; height: 100%; background: radial-gradient(ellipse 100% 80% at 10% 10%, rgba(0,200,150,0.08) 0%, transparent 50%), radial-gradient(ellipse 80% 60% at 90% 90%, rgba(139,92,246,0.06) 0%, transparent 50%); }
+        .floating-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.4; pointer-events: none; }
+        .orb-1 { width: 450px; height: 450px; background: linear-gradient(135deg, var(--bit3-green), var(--bit3-cyan)); top: -200px; left: -100px; animation: orbFloat1 25s ease-in-out infinite; }
+        .orb-2 { width: 350px; height: 350px; background: linear-gradient(135deg, var(--bit3-purple), var(--bit3-cyan)); bottom: -150px; right: -80px; animation: orbFloat2 30s ease-in-out infinite; }
+        @keyframes orbFloat1 { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(20px,60px); } }
+        @keyframes orbFloat2 { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-30px,-40px); } }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; position: relative; }
+
+        .glass { background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 24px; position: relative; overflow: hidden; transition: border-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out); }
+        .glass::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,200,150,0.25), transparent); }
+        .glass:hover { border-color: rgba(0,200,150,0.1); box-shadow: 0 4px 40px rgba(0,200,150,0.03); }
+
+        /* Header */
+        .header { padding: 40px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; animation: fadeSlideUp 0.7s var(--ease-out); }
+        .brand-name { font-size: 1.7rem; font-weight: 700; background: linear-gradient(135deg, #fff, var(--bit3-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 3px; }
+        .brand-tagline { font-size: 0.8rem; color: var(--text-muted); }
+        .header-meta { text-align: right; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: linear-gradient(135deg, rgba(0,200,150,0.12), rgba(139,92,246,0.08)); border: 1px solid rgba(0,200,150,0.25); border-radius: 100px; font-size: 0.7rem; font-weight: 600; color: var(--bit3-green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+        .client-name { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+        .client-detail { font-size: 0.8rem; color: var(--bit3-green); margin-bottom: 12px; }
+        .meta-line { font-size: 0.72rem; color: var(--text-subtle); display: flex; align-items: center; justify-content: flex-end; gap: 7px; margin-bottom: 3px; }
+        .meta-line i { font-size: 0.6rem; color: var(--bit3-green); opacity: 0.6; }
+
+        /* Section */
+        .section-label { font-size: 0.68rem; font-weight: 700; color: var(--bit3-green); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+        .section-divider { width: 48px; height: 2px; background: var(--bit3-green); border-radius: 2px; margin: 48px auto; opacity: 0.3; }
+        .prose { max-width: 68ch; }
+        .prose p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 14px; }
+        .highlight { color: var(--bit3-green); font-weight: 600; }
+
+        /* Features */
+        .features { list-style: none; }
+        .features li { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; padding-left: 22px; position: relative; line-height: 1.6; opacity: 0; transform: translateY(8px); animation: staggerIn 280ms var(--ease-out) forwards; }
+        .features li::before { content: '✓'; position: absolute; left: 0; font-weight: 700; }
+        .features.green li::before { color: var(--bit3-green); }
+        .features.purple li::before { color: var(--bit3-purple); }
+        .features.cyan li::before { color: var(--bit3-cyan); }
+        .features li strong { color: #fff; }
+        .features li:nth-child(1) { animation-delay: 0ms; }
+        .features li:nth-child(2) { animation-delay: 50ms; }
+        .features li:nth-child(3) { animation-delay: 100ms; }
+        .features li:nth-child(4) { animation-delay: 150ms; }
+        .features li:nth-child(5) { animation-delay: 200ms; }
+        .features li:nth-child(6) { animation-delay: 250ms; }
+        @keyframes staggerIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Plan card */
+        .plan-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 16px; }
+        .plan-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 22px 0; }
+        .plan-section-label { font-size: 0.62rem; font-weight: 700; color: var(--bit3-green); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+
+        /* Info boxes */
+        .info-box { background: rgba(0,200,150,0.04); border: 1px solid rgba(0,200,150,0.1); border-radius: 14px; padding: 18px; margin-top: 22px; }
+        .info-box p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; margin: 0; }
+        .info-box i { color: var(--bit3-green); margin-right: 6px; }
+        .info-box strong { color: var(--bit3-green); }
+
+        /* Conditions */
+        .conditions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .condition { padding: 22px; background: rgba(255,255,255,0.02); border-radius: 14px; }
+        .condition-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .condition-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,200,150,0.08); border-radius: 9px; flex-shrink: 0; }
+        .condition-icon i { font-size: 0.85rem; color: var(--bit3-green); }
+        .condition h4 { font-size: 0.85rem; font-weight: 600; color: #fff; }
+        .condition p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; }
+        .condition strong { color: var(--bit3-green); }
+
+        /* CTA */
+        .cta-whatsapp { display: inline-flex; align-items: center; gap: 10px; padding: 13px 30px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; border-radius: 100px; color: #fff; font-family: 'Bai Jamjuree', sans-serif; font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out); box-shadow: 0 4px 16px rgba(37,211,102,0.2); }
+        .cta-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(37,211,102,0.3); }
+        .cta-whatsapp:active { transform: scale(0.97); }
+
+        .signature { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sig-name { font-size: 0.95rem; font-weight: 600; color: var(--bit3-green); margin-bottom: 2px; }
+        .sig-title { font-size: 0.75rem; color: var(--text-subtle); }
+        .footer { text-align: center; padding: 24px 0; }
+        .footer p { font-size: 0.7rem; color: var(--text-subtle); }
+
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            .features li { opacity: 1; transform: none; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 40px 24px; }
+            .header { flex-direction: column; text-align: center; }
+            .header-meta { text-align: center; }
+            .meta-line { justify-content: center; }
+            .conditions-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-wrapper">
+        <div class="bg-noise"></div>
+        <div class="bg-gradient"></div>
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="glass header">
+            <div>
+                <div class="brand-name">Bit3io</div>
+                <div class="brand-tagline">Actualización y Desarrollo Empresarial</div>
+            </div>
+            <div class="header-meta">
+                <div class="badge"><i class="fas fa-stethoscope"></i> Desarrollo Web</div>
+                <div class="client-name">Dra. Jacky</div>
+                <div class="client-detail">Neonatóloga</div>
+                <div class="meta-info">
+                    <div class="meta-line"><i class="fas fa-calendar"></i> Junio 2026</div>
+                    <div class="meta-line"><i class="fas fa-clock"></i> Vigencia: 15 días naturales</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Intro -->
+        <section class="glass" style="padding: 36px 40px; margin-bottom: 48px; animation: fadeSlideUp 0.7s var(--ease-out) 0.1s both;">
+            <p class="section-label">Propuesta para Dra. Jacky</p>
+            <div class="prose">
+                <p>
+                    <span class="highlight">Dra. Jacky</span> ya tiene la experiencia, la especialidad y la confianza de sus pacientes. Lo que falta es un espacio digital propio donde las familias que buscan una neonatóloga puedan encontrarla, conocer su trayectoria y contactarla directamente.
+                </p>
+                <p>
+                    Hoy, cuando alguien busca "neonatóloga" en Tijuana o "especialista en recién nacidos", los resultados los dominan quienes tienen página web. Sin presencia propia, la visibilidad depende exclusivamente de las redes sociales y del boca a boca.
+                </p>
+                <p>
+                    Como parte de una colaboración de crecimiento mutuo, el diseño y desarrollo completo de la página web corre por cuenta de Bit3io, sin costo. Lo único que se cubre es la infraestructura técnica (dominio, hosting y protección) necesaria para que el sitio exista y funcione durante el primer año.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Plan único -->
+        <section class="glass" style="padding: 36px 40px; margin-bottom: 48px; animation: fadeSlideUp 0.7s var(--ease-out) 0.2s both;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="plan-icon" style="background: linear-gradient(135deg, rgba(0,200,150,0.15), rgba(0,200,150,0.05)); margin: 0 auto 16px;">
+                    <i class="fas fa-globe" style="font-size: 1.2rem; color: var(--bit3-green);"></i>
+                </div>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Página Web Profesional Completa</h3>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px;">Diseño, desarrollo y puesta en marcha</p>
+                <div style="font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--bit3-green), var(--bit3-green-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px;">$5,000 MXN</div>
+                <p style="font-size: 0.72rem; color: var(--text-subtle);">Pago único · Dominio + hosting + protección por 1 año</p>
+            </div>
+
+            <div class="plan-divider"></div>
+
+            <!-- Web -->
+            <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px;">
+                <div class="plan-icon" style="background: linear-gradient(135deg, rgba(0,200,150,0.12), rgba(0,200,150,0.04)); flex-shrink: 0;">
+                    <i class="fas fa-laptop-medical" style="font-size: 1rem; color: var(--bit3-green);"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 2px;">Página web (sin costo)</h4>
+                    <p style="font-size: 0.72rem; color: var(--text-subtle);">Diseño y desarrollo incluido como colaboración de crecimiento</p>
+                </div>
+            </div>
+            <ul class="features green">
+                <li><strong>Sitio multi-página completo:</strong> Home, Sobre mí / Trayectoria, Servicios, Contacto y Aviso de Privacidad</li>
+                <li><strong>Diseño profesional a la medida:</strong> estética limpia y profesional que transmita confianza, pensada para familias que buscan una especialista para su recién nacido</li>
+                <li><strong>100% responsive:</strong> se ve perfecto desde celular, tablet y computadora</li>
+                <li><strong>Integración directa:</strong> WhatsApp, redes sociales y Google Maps para que los pacientes te contacten o te encuentren en un tap</li>
+                <li><strong>Contenido actualizable:</strong> editar información, horarios y fotos desde WordPress sin depender de nadie</li>
+                <li><strong>Capacitación incluida:</strong> te enseñamos a usar el panel para que hagas cambios por tu cuenta</li>
+            </ul>
+
+            <div class="plan-divider"></div>
+
+            <!-- Infraestructura -->
+            <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px;">
+                <div class="plan-icon" style="background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(6,182,212,0.04)); flex-shrink: 0;">
+                    <i class="fas fa-server" style="font-size: 1rem; color: var(--bit3-cyan);"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 2px;">Infraestructura técnica ($5,000 MXN)</h4>
+                    <p style="font-size: 0.72rem; color: var(--text-subtle);">Lo único que se cobra: dominio, hosting y protección por 1 año</p>
+                </div>
+            </div>
+            <ul class="features cyan">
+                <li><strong>Dominio propio:</strong> drajacky.mx, drajacky.com o similar registrado a tu nombre por 1 año (sujeto a disponibilidad, en caso de que el nombre no esté disponible se buscan alternativas juntos)</li>
+                <li><strong>Hosting WordPress optimizado:</strong> servidor rápido con proveedor de hosting por 1 año, certificado SSL incluido (candado verde en el navegador)</li>
+                <li><strong>Instalación y configuración completa:</strong> WordPress listo, plugins configurados, seguridad activada, conexión dominio-hosting</li>
+            </ul>
+
+            <!-- Colaboración -->
+            <div class="info-box">
+                <p>
+                    <i class="fas fa-handshake"></i>
+                    <strong>¿Por qué el desarrollo es sin costo?</strong> Como parte de la estrategia de crecimiento de Bit3io, ofrecemos el diseño y desarrollo web a precio preferencial para construir una relación a largo plazo y hacernos de nuestros primeros clientes. A cambio, se incluye una mención discreta en la parte inferior del sitio: <em>"Página desarrollada por Bit3io"</em>, nada invasivo ni que interfiera con la identidad profesional de la Dra. Jacky.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Conditions -->
+        <section class="glass" style="padding: 36px 40px; margin-bottom: 48px; animation: fadeSlideUp 0.7s var(--ease-out) 0.4s both;">
+            <p class="section-label" style="text-align: center; margin-bottom: 24px;">Condiciones comerciales</p>
+            <div class="conditions-grid">
+                <div class="condition">
+                    <div class="condition-header">
+                        <div class="condition-icon"><i class="fas fa-calendar-check"></i></div>
+                        <h4>Vigencia</h4>
+                    </div>
+                    <p>Esta cotización tiene una vigencia de <strong>15 días naturales</strong> a partir de la fecha de emisión.</p>
+                </div>
+                <div class="condition">
+                    <div class="condition-header">
+                        <div class="condition-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                        <h4>Forma de pago</h4>
+                    </div>
+                    <p><strong>100%</strong> al inicio del proyecto.<br><br>Método: <strong>transferencia bancaria</strong>.</p>
+                </div>
+                <div class="condition">
+                    <div class="condition-header">
+                        <div class="condition-icon"><i class="fas fa-clock"></i></div>
+                        <h4>Tiempo de entrega</h4>
+                    </div>
+                    <p>Tiempo estimado: <strong>máximo 1 mes</strong> a partir de recibir el pago y los insumos necesarios (fotos, textos). El proyecto puede completarse antes dependiendo de la disponibilidad de materiales.</p>
+                </div>
+                <div class="condition">
+                    <div class="condition-header">
+                        <div class="condition-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h4>Dominio y hosting</h4>
+                    </div>
+                    <p>El registro del dominio y el hosting incluidos cubren <strong>el primer año completo</strong>. Tanto la contratación como la protección del nombre corren por nuestra cuenta durante ese periodo. A partir del segundo año, la renovación queda a cargo del cliente para mantener el sitio activo y el dominio protegido.</p>
+                </div>
+                <div class="condition">
+                    <div class="condition-header">
+                        <div class="condition-icon"><i class="fas fa-check-circle"></i></div>
+                        <h4>Aceptación</h4>
+                    </div>
+                    <p>Para aceptar esta propuesta, confirma vía WhatsApp directamente con tu asesor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Closing -->
+        <section class="glass" style="padding: 48px 40px; margin-bottom: 48px; text-align: center; animation: fadeSlideUp 0.7s var(--ease-out) 0.5s both;">
+            <div style="width: 70px; height: 70px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(0,200,150,0.2), rgba(139,92,246,0.15)); border-radius: 50%;">
+                <i class="fas fa-handshake" style="font-size: 1.8rem; background: linear-gradient(135deg, var(--bit3-green), var(--bit3-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: #fff; line-height: 1.65; max-width: 60ch; margin: 0 auto 16px;">La Dra. Jacky ya tiene la especialidad y la confianza de sus pacientes. Esto es solo la herramienta que le da la presencia digital que le falta.</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); max-width: 55ch; margin: 0 auto 24px;">Cualquier duda o ajuste, estamos a un mensaje.</p>
+            <a href="https://wa.link/694nn8" target="_blank" class="cta-whatsapp">
+                <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+            </a>
+            <div class="signature">
+                <div class="sig-name">Valentin Blas</div>
+                <div class="sig-title">Bit3io · Actualización y Desarrollo Empresarial</div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Bit3io · 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.glass').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
